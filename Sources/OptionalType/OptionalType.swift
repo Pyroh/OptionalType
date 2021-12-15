@@ -48,18 +48,6 @@ extension Optional: OptionalType {
 
 public extension OptionalType {
     @inlinable static func ??(_ lhs: Self,
-                              _ rhs: @autoclosure () throws -> Self.Wrapped) rethrows -> Self.Wrapped {
-        guard let lhs = lhs.wrapped else { return try rhs() }
-        return lhs
-    }
-    
-    @inlinable static func ??(_ lhs: Self,
-                              _ rhs: @autoclosure () throws -> Self.Wrapped?) rethrows -> Self.Wrapped? {
-        guard let lhs = lhs.wrapped else { return try rhs() }
-        return lhs
-    }
-    
-    @inlinable static func ??(_ lhs: Self,
                               _ rhs: @autoclosure () throws -> Self) rethrows -> Self {
         guard !lhs.isNil else { return try rhs() }
         return lhs
