@@ -24,4 +24,16 @@ final class OptionalTypeTests: XCTestCase {
         
         XCTAssert(seq2 == [1, 2, 4])
     }
+    
+    func testSo() {
+        let a: Int? = 22
+        let b: Int? = nil
+        
+        var c: Int = 20
+        
+        a.so { c += $0 }
+        b.so { c += $0 }
+        
+        XCTAssert(c == 42)
+    }
 }

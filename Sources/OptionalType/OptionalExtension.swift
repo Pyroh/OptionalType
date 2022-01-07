@@ -1,11 +1,11 @@
 //
-//  OptionalType.swift
+//  OptionalExtension.swift
 //
 //  OptionalType
 //
 //  MIT License
 //
-//  Copyright (c) 2021 Pierre Tacchi
+//  Copyright (c) 2022 Pierre Tacchi
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -26,19 +26,27 @@
 //  SOFTWARE.
 //
 
-public protocol OptionalType: ExpressibleByNilLiteral {
-    associatedtype Wrapped
+public extension Optional {
     
-    var wrapped: Wrapped? { get }
-    var isNil: Bool { get }
-    mutating func wrap(_ wrapping: Wrapped)
-    static func wrap(_ wrapping: Wrapped) -> Self
+    /// Evaluates the given closure when this Optional instance is not nil, passing the unwrapped value as a parameter.
+    ///
+    /// Like `map` but expected to return `Void`.
+    ///
+    /// - Parameter action: A closure that takes the unwrapped value of the instance.
+    @inlinable func so(_ action: (Wrapped) throws -> ()) rethrows {
+        switch self {
+        case .none: return
+        case .some(let wrapped): try action(wrapped)
+        }
+    }
 }
 
-public extension OptionalType {
-    @inlinable static func ??(_ lhs: Self,
-                              _ rhs: @autoclosure () throws -> Self) rethrows -> Self {
-        guard !lhs.isNil else { return try rhs() }
-        return lhs
-    }
+extension Optional: OptionalType {
+    @inlinable public var wrapped: Wrapped? { self }
+    
+    @inlinable public var isNil: Bool { self == nil }
+    
+    @inlinable public mutating func wrap(_ wrapping: Wrapped) { self = Self(wrapping) }
+    
+    @inlinable public static func wrap(_ wrapping: Wrapped) -> Optional<Wrapped> { Self(wrapping) }
 }
