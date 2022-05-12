@@ -39,6 +39,8 @@ public extension Optional {
         case .some(let wrapped): try action(wrapped)
         }
     }
+    
+    @inlinable func `as`<T>(_ type: T.Type) -> T? { self as? T }
 }
 
 extension Optional: OptionalType {

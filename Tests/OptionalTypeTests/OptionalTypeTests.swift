@@ -14,6 +14,17 @@ final class OptionalTypeTests: XCTestCase {
         XCTAssert(f(seq1) == [1, 2, 4])
     }
     
+    func testAs() {
+        let a: Any? = Int(23)
+        
+        XCTAssert(a.as(Int.self) == Int(23))
+        
+        let seq: [Any?] = [nil, Double(1), Int(4), nil, Float(22)]
+        
+        XCTAssert(seq.as(Double.self) == [nil, Double(1), nil, nil, nil])
+        XCTAssert(seq.compactAs(Double.self) == [Double(1)])
+    }
+    
     func testLazySequence() {
         func f<T: OptionalType>(_ a: [T]) -> some Sequence { a.lazy.compactMap { $0.wrapped } }
         
@@ -23,6 +34,16 @@ final class OptionalTypeTests: XCTestCase {
         let seq2: [Int] = seq1.lazy.compact()
         
         XCTAssert(seq2 == [1, 2, 4])
+    }
+    
+    func testLazyAs() {
+        let seq: [Any?] = [nil, Double(1), Int(4), nil, Float(22)]
+        
+        print(type(of: seq.lazy.as(Double.self)))
+        print(type(of: seq.lazy.compactAs(Double.self)))
+        
+        XCTAssert(seq.lazy.as(Double.self) == [nil, Double(1), nil, nil, nil])
+        XCTAssert(seq.lazy.compactAs(Double.self) == [Double(1)])
     }
     
     func testSo() {

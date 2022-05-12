@@ -26,8 +26,18 @@
 //  SOFTWARE.
 //
 
-public extension LazySequence where Element: OptionalType {
-    @inlinable func compact() -> LazyMapSequence<LazyFilterSequence<LazyMapSequence<Base, Element.Wrapped?>>, Element.Wrapped> {
+public extension LazySequenceProtocol {
+    @inlinable func `as`<T>(_ type: T.Type) -> some LazySequenceProtocol {
+        map { $0 as? T }
+    }
+    
+    @inlinable func compactAs<T>(_ type: T.Type) -> some LazySequenceProtocol {
+        compactMap { $0 as? T }
+    }
+}
+
+public extension LazySequenceProtocol where Element: OptionalType {
+    @inlinable func compact() -> some LazySequenceProtocol {
         self.compactMap { $0.wrapped }
     }
 }

@@ -26,6 +26,11 @@
 //  SOFTWARE.
 //
 
+public extension Sequence {
+    @inlinable func `as`<T>(_ type: T.Type) -> [T?] { map { $0 as? T } }
+    @inlinable func compactAs<T>(_ type: T.Type) -> [T] { compactMap { $0 as? T } }
+}
+
 public extension Sequence where Element: OptionalType {
     @inlinable func compact() -> [Element.Wrapped] { compactMap { $0.wrapped } }
 }
