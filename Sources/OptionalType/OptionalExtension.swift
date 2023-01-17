@@ -41,6 +41,13 @@ public extension Optional {
     }
     
     @inlinable func `as`<T>(_ type: T.Type) -> T? { self as? T }
+    
+    @inlinable func replaceNil(with output: @autoclosure () -> Wrapped) -> Wrapped {
+        switch self {
+        case .none: return output()
+        case .some(let wrapped): return wrapped
+        }
+    }
 }
 
 extension Optional: OptionalType {

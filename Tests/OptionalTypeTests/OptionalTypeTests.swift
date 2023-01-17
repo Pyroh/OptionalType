@@ -57,4 +57,12 @@ final class OptionalTypeTests: XCTestCase {
         
         XCTAssert(c == 42)
     }
+    
+    func testReplaceNil() {
+        let a: Int? = 22
+        let b: Int? = nil
+        
+        XCTAssertFalse(a.replaceNil(with: 42) == 42)
+        XCTAssertTrue(b.replaceNil(with: 42) == 42)
+    }
 }
