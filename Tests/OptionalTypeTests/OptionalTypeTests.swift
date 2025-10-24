@@ -5,6 +5,18 @@ protocol EquatableSequence: Sequence where Element: Equatable { }
 
 final class OptionalTypeTests: XCTestCase {
     
+    func testWrap() {
+        func f<T: OptionalType>(_ a: T) -> Bool { if a.wrapped != nil { true } else { false } }
+        
+        let nonOptInt: Int = 0
+        let optInt1: Int? = 0
+        let optInt2: Int? = nil
+        
+        XCTAssertTrue(f(Optional.wrap(nonOptInt)))
+        XCTAssertTrue(f(Optional<Int>.wrap(optInt1)))
+        XCTAssertFalse(f(Optional<Int>.wrap(optInt2)))
+    }
+    
     func testSequence() {
         func f<T: OptionalType>(_ a: [T]) -> [T.Wrapped] { a.compactMap { $0.wrapped } }
         

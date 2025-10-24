@@ -32,7 +32,10 @@ public protocol OptionalType: ExpressibleByNilLiteral {
     var wrapped: Wrapped? { get }
     var isNil: Bool { get }
     mutating func wrap(_ wrapping: Wrapped)
+    mutating func wrap(_ wrapping: Wrapped?)
+    
     static func wrap(_ wrapping: Wrapped) -> Self
+    static func wrap(_ wrapping: Wrapped?) -> Self
 }
 
 public extension OptionalType {

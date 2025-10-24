@@ -56,6 +56,8 @@ extension Optional: OptionalType {
     @inlinable public var isNil: Bool { self == nil }
     
     @inlinable public mutating func wrap(_ wrapping: Wrapped) { self = Self(wrapping) }
+    @inlinable public mutating func wrap(_ wrapping: Wrapped?) { self = wrapping.map(Self.wrap) ?? .none }
     
     @inlinable public static func wrap(_ wrapping: Wrapped) -> Optional<Wrapped> { Self(wrapping) }
+    @inlinable public static func wrap(_ wrapping: Wrapped?) -> Optional<Wrapped> { wrapping.map(wrap) ?? .none }
 }
